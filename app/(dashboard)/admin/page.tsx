@@ -1,7 +1,9 @@
 import { authOptions } from "@/app/_lib/auth";
 import { getServerSession } from "next-auth";
+import router from "next/router";
 
 const Page = async () => {
+
     const session = await getServerSession(authOptions);
 
     if(session?.user) {

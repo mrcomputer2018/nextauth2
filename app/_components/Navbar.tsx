@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import { Button, buttonVariants } from './ui/button';
+import { buttonVariants } from './ui/button';
 import { HandMetal } from 'lucide-react';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/_lib/auth';
-import { signOut } from 'next-auth/react';
+import UserAccountnav from './userAccountnav';
 
 const Navbar = async () => {
     const session = await getServerSession(authOptions);
@@ -16,9 +16,7 @@ const Navbar = async () => {
                 </Link>
 
                  { session?.user ? (
-                        <Button variant="outline" onClick={ () => signOut() }>
-                            Sign Out
-                        </Button>
+                        <UserAccountnav />
                     ) : (
                         <Link className={buttonVariants()} href='/sign-in'>
                             Sign in
