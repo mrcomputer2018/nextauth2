@@ -15,6 +15,7 @@ import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import GoogleSignInButton from '../GoogleSignInButton';
+import { useRouter } from 'next/navigation';
 
 const FormSchema = z
   .object({
@@ -32,19 +33,40 @@ const FormSchema = z
   });
 
 const SignUpForm = () => {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      username: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-    },
+    const router = useRouter();
+    
+    const form = useForm<z.infer<typeof FormSchema>>({
+        resolver: zodResolver(FormSchema),
+        defaultValues: {
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        },
   });
 
-  const onSubmit = (values: z.infer<typeof FormSchema>) => {
+  const onSubmit = async(values: z.infer<typeof FormSchema>) => {
     console.log(values);
-  };
+    const response = await fetch('/api/user', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            username: values.username,
+            email: values.email,
+            password: values.password,
+        }),
+    });
+
+    if (response.ok) {
+        router.push('/sign-in');
+        console.log('User created');
+    } else {
+        console.error('Failed to create user');
+    }
+
+  }
 
   return (
     <Form {...form}>
