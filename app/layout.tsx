@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import Provider from "./_components/Provider";
 
 import Navbar from "./_components/Navbar";
 import { Toaster } from "./_components/ui/toaster";
@@ -23,11 +24,13 @@ export default function RootLayout({
     return (
         <html lang="pt-br">
             <body className={poppins.className}>
-                <main className="h-screen flex flex-col justify-center items-center">
-                    <Navbar />
-                    {children}
-                </main>
-                <Toaster />
+                <Provider>
+                    <main className="h-screen flex flex-col justify-center items-center">
+                        <Navbar />
+                        {children}
+                    </main>
+                    <Toaster />
+                </Provider>
             </body>
         </html>
     );
